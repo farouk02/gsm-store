@@ -38,6 +38,28 @@
 
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ms-auto">
+                        <li class="nav-item dropdown">
+                            <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                                aria-haspopup="true" aria-expanded="false" v-pre>
+                                <img src="/img/flags/{{ App::currentLocale() }}.png" width="20px" alt="{{ __(App::currentLocale()) }}"> {{
+                                __(App::currentLocale()) }}
+                            </a>
+
+                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item" href="{{ route('locale', 'en') }}" onclick="">
+                                    <img src="/img/flags/en.png" width="20px" alt="{{ __('en') }}">
+                                    {{ __('en') }}
+                                </a>
+                                <a class="dropdown-item" href="{{ route('locale', 'ar') }}" onclick="">
+                                    <img src="/img/flags/ar.png" width="20px" alt="{{ __('ar') }}">
+                                    {{ __('ar') }}
+                                </a>
+                                <a class="dropdown-item" href="{{ route('locale', 'fr') }}" onclick="">
+                                    <img src="/img/flags/fr.png" width="20px" alt="{{ __('fr') }}">
+                                    {{ __('fr') }}
+                                </a>
+                            </div>
+                        </li>
                         <!-- Authentication Links -->
                         @guest
                             @if (Route::has('login'))

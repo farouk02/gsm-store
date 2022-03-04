@@ -31,6 +31,8 @@ class RedirectIfAuthenticated
                     return redirect(RouteServiceProvider::VENDOR);
                 } elseif (Auth::guard($guard)->check() && Auth::user()->role === 9) {
                     return redirect(RouteServiceProvider::ADMIN);
+                } else {
+                    return redirect('/');
                 }
             }
         }

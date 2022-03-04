@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Roles\UserController;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -23,22 +24,28 @@ Route::middleware(['PreventBackHistory'])->group(function () {
         return view('welcome');
     });
 
+    Route::get('/lang/{lang}', function ($lang) {
+        session(['locale' => $lang]);
+        return redirect()->back();
+    })->name('locale');
+
     Auth::routes();
 
     Route::middleware(['auth'])->group(function () {
-        Route::group(['prefix' => 'user', 'middleware' => 'user', 'name' => 'user.'], function () {
+
+        Route::prefix('user')->name('user.')->middleware('user')->group(function () {
             Route::get('dashboard', [UserController::class, 'index'])->name('dashboard');
             Route::get('profile', [UserController::class, 'profile'])->name('profile');
         });
-        Route::group(['prefix' => 'admin', 'middleware' => 'admin', 'name' => 'admin.'], function () {
+        Route::prefix('admin')->name('admin.')->middleware('admin')->group(function () {
             Route::get('dashboard', [UserController::class, 'index'])->name('dashboard');
             Route::get('profile', [UserController::class, 'profile'])->name('profile');
         });
-        Route::group(['prefix' => 'vendor', 'middleware' => 'vendor', 'name' => 'vendor.'], function () {
+        Route::prefix('vendor')->name('vendor.')->middleware('vendor')->group(function () {
             Route::get('dashboard', [UserController::class, 'index'])->name('dashboard');
             Route::get('profile', [UserController::class, 'profile'])->name('profile');
         });
-        Route::group(['prefix' => 'repairer', 'middleware' => 'repairer', 'name' => 'repairer.'], function () {
+        Route::prefix('repairer')->name('repairer.')->middleware('repairer')->group(function () {
             Route::get('dashboard', [UserController::class, 'index'])->name('dashboard');
             Route::get('profile', [UserController::class, 'profile'])->name('profile');
         });
