@@ -15,19 +15,19 @@ class User extends Authenticatable implements MustVerifyEmail
         'role',
         'username',
         'email',
-        'password',
+        'password'
     ];
 
     protected $hidden = [
         'password',
-        'remember_token',
+        'remember_token'
     ];
 
     protected $casts = [
-        'email_verified_at' => 'datetime',
+        'email_verified_at' => 'datetime'
     ];
 
     protected $dates = [
-        'deleted_at' => 'datetime',
+        'deleted_at' => 'datetime'
     ];
 }

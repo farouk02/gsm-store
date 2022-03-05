@@ -54,13 +54,8 @@ class LoginController extends Controller
 
         session(['locale' => $locale]);
 
-        if ($response = $this->loggedOut($request)) {
-            return $response;
-        }
 
-        return $request->wantsJson()
-            ? new JsonResponse([], 204)
-            : redirect()->route('login');
+        return redirect()->route('login');
     }
 
     /**
