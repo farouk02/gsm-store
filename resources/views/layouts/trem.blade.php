@@ -9,7 +9,7 @@
     <meta name="author" content="" />
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>{{ config('app.name', 'Laravel') }}</title>
+    <title>{{ config('app.name', 'Laravel') }} | {{ Route::currentRouteName() }}</title>
     <!-- loader-->
     <link href="assets/css/pace.min.css" rel="stylesheet" />
     <script src="assets/js/pace.min.js"></script>
@@ -47,16 +47,17 @@
             <ul class="sidebar-menu do-nicescrol">
                 <li class="sidebar-header">MAIN NAVIGATION</li>
 
-                @admin()
+                @admin
                 <li>
                     <a href="{{ route('activities') }}">
                         <i class="zmdi zmdi-view-dashboard"></i> <span>Activities</span>
                     </a>
                 </li>
-                @endAdmin()
+                @endAdmin
 
-                @vendor()
-                @endVendor()
+                @vendor
+
+                @endVendor
 
                 <li>
                     <a href="index.html">
@@ -140,31 +141,26 @@
                 </ul>
 
                 <ul class="navbar-nav align-items-center right-nav-link">
-                    <li class="nav-item dropdown-lg">
-                        <a class="nav-link dropdown-toggle dropdown-toggle-nocaret waves-effect" data-toggle="dropdown"
-                            href="javascript:void();">
-                            <i class="fa fa-envelope-open-o"></i></a>
-                    </li>
-                    <li class="nav-item dropdown-lg">
-                        <a class="nav-link dropdown-toggle dropdown-toggle-nocaret waves-effect" data-toggle="dropdown"
-                            href="javascript:void();">
-                            <i class="fa fa-bell-o"></i></a>
-                    </li>
+
                     <li class="nav-item language">
                         <a class="nav-link dropdown-toggle dropdown-toggle-nocaret waves-effect" data-toggle="dropdown"
-                            href="javascript:void();"><i class="fa fa-flag"></i></a>
+                            href="javascript:void();"><i
+                                class="flag-icon flag-icon-{{ App::currentLocale() }} mr-2"></i>{{ App::currentLocale() }}</a>
                         <ul class="dropdown-menu dropdown-menu-right">
                             <li class="dropdown-item">
-                                <i class="flag-icon flag-icon-gb mr-2"></i> English
+                                <a href="{{ route('locale', 'ar') }}">
+                                    <i class="flag-icon flag-icon-ar mr-2"></i> العربية
+                                </a>
                             </li>
                             <li class="dropdown-item">
-                                <i class="flag-icon flag-icon-fr mr-2"></i> French
+                                <a href="{{ route('locale', 'fr') }}">
+                                    <i class="flag-icon flag-icon-fr mr-2"></i> Francais
+                                </a>
                             </li>
                             <li class="dropdown-item">
-                                <i class="flag-icon flag-icon-cn mr-2"></i> Chinese
-                            </li>
-                            <li class="dropdown-item">
-                                <i class="flag-icon flag-icon-de mr-2"></i> German
+                                <a href="{{ route('locale', 'en') }}">
+                                    <i class="flag-icon flag-icon-en mr-2"></i> English
+                                </a>
                             </li>
                         </ul>
                     </li>
@@ -233,7 +229,8 @@
         <!--Start footer-->
         <footer class="footer">
             <div class="container">
-                <div class="text-center">Copyright © {{ now()->year }} {{ config('app.name', 'Laravel') }}</div>
+                <div class="text-center">Copyright © {{ now()->year }} {{ config('app.name', 'Laravel') }}
+                </div>
             </div>
         </footer>
         <!--End footer-->

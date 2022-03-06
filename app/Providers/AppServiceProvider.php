@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
 
@@ -24,6 +25,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+
         Blade::directive('admin', function () {
             return "<?php if(Auth::user()->role === 9): ?>";
         });
@@ -33,7 +35,7 @@ class AppServiceProvider extends ServiceProvider
         });
 
         Blade::directive('vendor', function () {
-            return "<?php if(Auth::user()->role === 5 && Auth::user()->role === 9): ?>";
+            return "<?php if(Auth::user()->role === 5 || Auth::user()->role === 9): ?>";
         });
 
         Blade::directive('endVendor', function () {
@@ -41,7 +43,7 @@ class AppServiceProvider extends ServiceProvider
         });
 
         Blade::directive('repairer', function () {
-            return "<?php if(Auth::user()->role === 1 && Auth::user()->role === 9): ?>";
+            return "<?php if(Auth::user()->role === 1 || Auth::user()->role === 9): ?>";
         });
 
         Blade::directive('endRepairer', function () {

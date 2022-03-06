@@ -19,7 +19,10 @@
                                 <th scope="col">Activity</th>
                                 <th scope="col">Created at</th>
                                 <th scope="col">Updated at</th>
+                                @admin
                                 <th scope="col">Deleted at</th>
+
+                                @endAdmin
                                 <th scope="col">Actions</th>
                             </tr>
                         </thead>
