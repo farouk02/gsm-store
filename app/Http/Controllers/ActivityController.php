@@ -14,7 +14,8 @@ class ActivityController extends Controller
      */
     public function index()
     {
-        //
+        $activities = Activity::orderByDesc('order')->get();
+        return view('dashboard.activities', ['activities' => $activities]);
     }
 
     /**

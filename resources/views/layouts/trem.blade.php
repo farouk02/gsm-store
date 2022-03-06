@@ -39,13 +39,25 @@
         <!--Start sidebar-wrapper-->
         <div id="sidebar-wrapper" data-simplebar="" data-simplebar-auto-hide="true">
             <div class="brand-logo">
-                <a href="index.html">
-                    <img src="assets/images/logo-icon.png" class="logo-icon" alt="logo icon" />
-                    <h5 class="logo-text">Dashtreme Admin</h5>
+                <a href="{{ route('test') }}">
+                    <img src="assets/images/logo-icon.png" class="logo-icon" alt="logo gsm-store oran icon" />
+                    <h5 class="logo-text">{{ config('app.name', 'Laravel') }}</h5>
                 </a>
             </div>
             <ul class="sidebar-menu do-nicescrol">
                 <li class="sidebar-header">MAIN NAVIGATION</li>
+
+                @admin()
+                <li>
+                    <a href="{{ route('activities') }}">
+                        <i class="zmdi zmdi-view-dashboard"></i> <span>Activities</span>
+                    </a>
+                </li>
+                @endAdmin()
+
+                @vendor()
+                @endVendor()
+
                 <li>
                     <a href="index.html">
                         <i class="zmdi zmdi-view-dashboard"></i> <span>Dashboard</span>
@@ -221,7 +233,7 @@
         <!--Start footer-->
         <footer class="footer">
             <div class="container">
-                <div class="text-center">Copyright © 2018 Dashtreme Admin</div>
+                <div class="text-center">Copyright © {{ now()->year }} {{ config('app.name', 'Laravel') }}</div>
             </div>
         </footer>
         <!--End footer-->
