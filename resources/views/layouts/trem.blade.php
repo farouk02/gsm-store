@@ -9,7 +9,7 @@
     <meta name="author" content="" />
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>{{ config('app.name', 'Laravel') }} | {{ Route::currentRouteName() }}</title>
+    <title>{{ Route::currentRouteName() }} | {{ config('app.name', 'Laravel') }}</title>
     <!-- loader-->
     <link href="assets/css/pace.min.css" rel="stylesheet" />
     <script src="assets/js/pace.min.js"></script>
@@ -29,6 +29,10 @@
     <link href="assets/css/sidebar-menu.css" rel="stylesheet" />
     <!-- Custom Style-->
     <link href="assets/css/app-style.css" rel="stylesheet" />
+    @if (Route::currentRouteName() === 'activities')
+        <link rel="stylesheet" href="//code.jquery.com/ui/1.13.1/themes/base/jquery-ui.css">
+    @endif
+
 
 </head>
 
@@ -41,7 +45,7 @@
             <div class="brand-logo">
                 <a href="{{ route('test') }}">
                     <img src="assets/images/logo-icon.png" class="logo-icon" alt="logo gsm-store oran icon" />
-                    <h5 class="logo-text">{{ config('app.name', 'Laravel') }}</h5>
+                    <h5 class="logo-text">{{ config('app.name', 'GSM STORE') }}</h5>
                 </a>
             </div>
             <ul class="sidebar-menu do-nicescrol">
@@ -145,23 +149,16 @@
                     <li class="nav-item language">
                         <a class="nav-link dropdown-toggle dropdown-toggle-nocaret waves-effect" data-toggle="dropdown"
                             href="javascript:void();"><i
-                                class="flag-icon flag-icon-{{ App::currentLocale() === 'en' ? 'gb' : App::currentLocale() }} mr-2"></i>{{ __(App::currentLocale()) }}</a>
+                                class="flag-icon flag-icon-{{ App::getLocale() }} mr-2"></i>{{ __(App::currentLocale()) }}</a>
                         <ul class="dropdown-menu dropdown-menu-right">
-                            <li class="dropdown-item">
-                                <a href="{{ route('locale', 'ar') }}">
-                                    <i class="flag-icon flag-icon-ar mr-2"></i> {{ __('ar') }}
-                                </a>
-                            </li>
-                            <li class="dropdown-item">
-                                <a href="{{ route('locale', 'fr') }}">
-                                    <i class="flag-icon flag-icon-fr mr-2"></i> {{ __('fr') }}
-                                </a>
-                            </li>
-                            <li class="dropdown-item">
-                                <a href="{{ route('locale', 'en') }}">
-                                    <i class="flag-icon flag-icon-gb mr-2"></i> {{ __('en') }}
-                                </a>
-                            </li>
+                            @foreach (Config::get('app.locales', 'fr') as $locale)
+                                <li class="dropdown-item">
+                                    <a href="{{ route('locale', $locale) }}">
+                                        <i class="flag-icon flag-icon-{{ $locale }} mr-2"></i>
+                                        {{ __($locale) }}
+                                    </a>
+                                </li>
+                            @endforeach
                         </ul>
                     </li>
                     <li class="nav-item">
@@ -214,7 +211,6 @@
         </header>
         <!--End topbar header-->
 
-        <div class="clearfix"></div>
 
 
         <div class="content-wrapper">
@@ -303,6 +299,40 @@
     <!-- Index js -->
     <script src="assets/js/index.js"></script>
 
+    @if (Route::currentRouteName() === 'activities')
+        <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+        <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.js"></script>
+
+        <script>
+            $(function() {
+                $(document).ajaxStop(function() {
+                    window.location.reload();
+                });
+                $('#activity-order').sortable({
+                    axis: 'y',
+                    update: function(event, ui) {
+                        var data = $(this).sortable('toArray').map(function(x) {
+                            return x.replace('act-', '')
+                        });
+
+                        console.log(data);
+                        // POST to server using $.post or $.ajax
+                        $.ajax({
+                            headers: {
+                                'X-CSRF-Token': $('input[name="_token"]').attr('value')
+                            },
+                            data: {
+                                'order[]': data
+                            },
+                            type: 'POST',
+                            dataType: "json",
+                            url: '/activities/order'
+                        });
+                    }
+                });
+            });
+        </script>
+    @endif
 
 </body>
 

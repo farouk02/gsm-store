@@ -24,38 +24,39 @@ Route::middleware(['PreventBackHistory'])->group(function () {
 
     Route::middleware(['auth'])->group(function () {
 
-        Route::controller(ActivityController::class)->prefix('activities')->middleware('admin')->name('activities')->group(function () {
+        Route::controller(ActivityController::class)->prefix('activities')->middleware(['admin'])->name('activities')->group(function () {
             Route::get('', 'index');
-            Route::post('store', 'store')->name('store');
-            Route::post('update/{id}', 'update')->name('update');
-            Route::get('delete/{id}', 'delete')->name('delete');
-            Route::get('destroy/{id}', 'destroy')->name('destroy')->withTrashed();
-            Route::get('restore/{id}', 'restore')->name('restore')->withTrashed();
+            Route::post('store', 'store')->name('.store');
+            Route::post('order', 'order')->name('.order');
+            Route::post('update/{activity}', 'update')->name('.update');
+            Route::post('destroy/{activity}', 'destroy')->name('.destroy');
+            Route::post('delete/{activity}', 'delete')->name('.delete')->withTrashed();
+            Route::get('restore/{activity}', 'restore')->name('.restore')->withTrashed();
         });
 
-        Route::controller(OrderController::class)->prefix('orders')->middleware(['admin'])->name('orders')->group(function () {
+
+        Route::controller(Client::class)->prefix('clients')->name('clients')->group(function () {
+            Route::get('', 'index');
+            Route::get('create', 'create')->name('.create');
+            Route::post('store', 'store')->name('.store');
+            Route::get('edit', 'edit')->name('.edit');
+            Route::post('update/{id}', 'update')->name('.update');
+            Route::get('delete/{id}', 'delete')->name('.delete');
+            Route::get('destroy/{id}', 'destroy')->name('.destroy')->withTrashed()->middleware(['admin']);
+            Route::get('restore/{id}', 'restore')->name('.restore')->withTrashed()->middleware(['admin']);
+        });
+
+
+        Route::controller(OrderController::class)->prefix('orders')->name('orders')->group(function () {
             Route::get('', 'index')->middleware(['vendor', 'repairer']);
-            Route::get('create', 'create')->name('create')->middleware('vendor');
-            Route::post('store', 'store')->name('store')->middleware('vendor');
-            Route::get('edit', 'edit')->name('edit')->middleware(['vendor', 'repairer']);
-            Route::post('update/{id}', 'update')->middleware(['vendor', 'repairer']);
-            Route::get('delete/{id}', 'delete')->name('delete')->middleware('vendor');
-            Route::get('destroy/{id}', 'destroy')->name('destroy')->withTrashed();
-            Route::get('restore/{id}', 'restore')->name('restore')->withTrashed();
+            Route::get('create', 'create')->name('.create')->middleware('vendor');
+            Route::post('store', 'store')->name('.store')->middleware('vendor');
+            Route::get('edit', 'edit')->name('.edit')->middleware(['vendor', 'repairer']);
+            Route::post('update/{id}', 'update')->name('.update')->middleware(['vendor', 'repairer']);
+            Route::get('delete/{id}', 'delete')->name('.delete')->middleware('vendor');
+            Route::get('destroy/{id}', 'destroy')->name('.destroy')->withTrashed()->middleware(['admin']);
+            Route::get('restore/{id}', 'restore')->name('.restore')->withTrashed()->middleware(['admin']);
         });
-
-        Route::controller(Client::class)->prefix('clients')->middleware(['vendor', 'admin'])->name('clients')->group(function () {
-            Route::get('', 'index');
-            Route::get('create', 'create')->name('create');
-            Route::post('store', 'store')->name('store');
-            Route::get('edit', 'edit')->name('edit');
-            Route::post('update/{id}', 'update')->name('update');
-            Route::get('delete/{id}', 'delete')->name('delete');
-            Route::get('destroy/{id}', 'destroy')->name('destroy')->withTrashed();
-            Route::get('restore/{id}', 'restore')->name('restore')->withTrashed();
-        });
-
-
 
 
         Route::prefix('user')->name('user.')->middleware('user')->group(function () {
