@@ -9,16 +9,25 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>{{ config('app.name', 'Laravel') }} | {{ Route::currentRouteName() }}</title>
-
-    <!-- Scripts -->
-    <script src="{{ asset('js/app.js') }}" defer></script>
+    <link rel="icon" href="assets/images/favicon.ico" type="image/x-icon">
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
 
     <!-- Styles -->
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous">
+    </script>
+
+
+    <link rel="stylesheet" href="{{ asset('css/app.css') }}">
 </head>
 
 <body>
@@ -45,22 +54,22 @@
                         <li class="nav-item dropdown">
                             <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
                                 data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                <img src="/img/flags/{{ App::currentLocale() }}.png" width="20px"
+                                <img src="/img/flags/{{ App::currentLocale() }}.svg" width="20px"
                                     alt="{{ __(App::currentLocale()) }}">
                                 {{ __(App::currentLocale()) }}
                             </a>
 
                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
                                 <a class="dropdown-item" href="{{ route('locale', 'en') }}" onclick="">
-                                    <img src="/img/flags/en.png" width="20px" alt="{{ __('en') }}">
+                                    <img src="/img/flags/en.svg" width="20px" alt="{{ __('en') }}">
                                     {{ __('en') }}
                                 </a>
                                 <a class="dropdown-item" href="{{ route('locale', 'ar') }}" onclick="">
-                                    <img src="/img/flags/ar.png" width="20px" alt="{{ __('ar') }}">
+                                    <img src="/img/flags/ar.svg" width="20px" alt="{{ __('ar') }}">
                                     {{ __('ar') }}
                                 </a>
                                 <a class="dropdown-item" href="{{ route('locale', 'fr') }}" onclick="">
-                                    <img src="/img/flags/fr.png" width="20px" alt="{{ __('fr') }}">
+                                    <img src="/img/flags/fr.svg" width="20px" alt="{{ __('fr') }}">
                                     {{ __('fr') }}
                                 </a>
                             </div>
@@ -86,8 +95,9 @@
                                 </a>
 
                                 <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();
-                                                                 document.getElementById('logout-form').submit();">
+                                    <a class="dropdown-item" href="{{ route('logout') }}"
+                                        onclick="event.preventDefault();
+                                                                                                                                                                                                                                     document.getElementById('logout-form').submit();">
                                         {{ __('Logout') }}
                                     </a>
 
@@ -103,10 +113,52 @@
             </div>
         </nav>
 
+
+
         <main class="py-4">
             @yield('content')
         </main>
+        <footer class="footer">
+            <div class="container">
+                <div class="text-center">Copyright © {{ now()->year }} {{ config('app.name', 'Laravel') }}
+                </div>
+            </div>
+        </footer>
     </div>
+
+
+    @if (Route::currentRouteName() === 'activities')
+        <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.js"></script>
+
+        <script>
+            $(function() {
+                $(document).ajaxStop(function() {
+                    window.location.reload();
+                });
+                $('#activity-order').sortable({
+                    axis: 'y',
+                    update: function(event, ui) {
+                        var data = $(this).sortable('toArray').map(function(x) {
+                            return x.replace('act-', '')
+                        });
+                        $.ajax({
+                            headers: {
+                                'X-CSRF-Token': $('input[name="_token"]').attr('value')
+                            },
+                            data: {
+                                'order[]': data
+                            },
+                            type: 'POST',
+                            dataType: "json",
+                            url: '/activities/order'
+                        });
+                    }
+                });
+            });
+        </script>
+    @endif
+
+
 </body>
 
 </html>

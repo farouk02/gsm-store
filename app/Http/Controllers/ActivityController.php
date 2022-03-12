@@ -40,15 +40,14 @@ class ActivityController extends Controller
     {
         $i = 1;
         foreach ($request->order as $value) {
-            $activity = Activity::find($value);
-            $activity->order = $i;
+            $activity = Activity::findOrFail($value);
+            $activity->order = $i++;
             $activity->save();
             Activity::find($value)->update();
-            $i++;
+            // $i++;
         }
-        $activities = Activity::orderBy('order')->get();
 
-        return $activities;
+        return true;
     }
 
     public function destroy(Activity $activity)

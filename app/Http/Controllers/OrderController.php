@@ -2,90 +2,99 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Activity;
 use App\Models\Order;
 use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Str;
 
 class OrderController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
+    public function __construct()
+    {
+        // $this->middleware('admin');
+    }
+
     public function index()
     {
-        //
+        Collection::macro('checked', function () {
+            return $this->map(function ($value) {
+                return $value->activity->order;
+            });
+        });
+
+        $last = count(Activity::all());
+        $orders = Order::all()->where('activity.order', '!=', $last);
+        $checked = Order::all()->where('activity.order', $last);
+        $trashed = Order::onlyTrashed()->get();
+        return view('dashboard.orders.index', ['orders' => $orders, 'checked' => $checked, 'trashed' => $trashed]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
-        //
+        return view('dashboard.orders.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => ['required', 'string'],
+            'phone_number' => ['required', 'numeric'],
+            'mobile_type' => ['required', 'string'],
+            'description' => ['required', 'string'],
+        ]);
+        $activity = Activity::orderBy('order')->first();
+        $order = new Order();
+
+        $order->track_number = Str::upper(bin2hex(random_bytes(3)));
+        // $order->track_number = bin2hex(random_bytes(3));
+        $order->activity_id = $activity->id;
+        $order->name = $request->name;
+        $order->phone_number = $request->phone_number;
+        $order->mobile_type = $request->mobile_type;
+        $order->description = $request->description;
+        $order->save();
+
+        return redirect(route('orders'))->with(['success' => true]);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Order  $order
-     * @return \Illuminate\Http\Response
-     */
+
     public function show(Order $order)
     {
-        //
-    }
-    public function status(Request $request)
-    {
-        $status = 1;
-
-        return view('tracking', ['track_number' => $request->track_number, 'status' => $status]);
+        return view('dashboard.orders.show', [
+            'order' => $order,
+        ]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Order  $order
-     * @return \Illuminate\Http\Response
-     */
+
     public function edit(Order $order)
     {
         //
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Order  $order
-     * @return \Illuminate\Http\Response
-     */
+    public function updateStatus(Request $request, Order $order)
+    {
+        //
+    }
     public function update(Request $request, Order $order)
     {
         //
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Order  $order
-     * @return \Illuminate\Http\Response
-     */
     public function destroy(Order $order)
     {
-        //
+        $order->delete();
+        return redirect()->back();
+    }
+    public function restore(Order $order)
+    {
+        $order->restore();
+        return redirect()->back();
+    }
+    public function delete(Order $order)
+    {
+        $order->forceDelete();
+        return redirect()->back();
     }
 }

@@ -10,9 +10,6 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>{{ Route::currentRouteName() }} | {{ config('app.name', 'Laravel') }}</title>
-    <!-- loader-->
-    <link href="assets/css/pace.min.css" rel="stylesheet" />
-    <script src="assets/js/pace.min.js"></script>
     <!--favicon-->
     <link rel="icon" href="assets/images/favicon.ico" type="image/x-icon">
     <!-- Vector CSS -->
@@ -20,11 +17,14 @@
     <!-- simplebar CSS-->
     <link href="assets/plugins/simplebar/css/simplebar.css" rel="stylesheet" />
     <!-- Bootstrap core CSS-->
-    <link href="assets/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous">
+    </script>
     <!-- animate CSS-->
-    <link href="assets/css/animate.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
     <!-- Icons CSS-->
-    <link href="assets/css/icons.css" rel="stylesheet" type="text/css" />
     <!-- Sidebar CSS-->
     <link href="assets/css/sidebar-menu.css" rel="stylesheet" />
     <!-- Custom Style-->
@@ -43,7 +43,7 @@
         <!--Start sidebar-wrapper-->
         <div id="sidebar-wrapper" data-simplebar="" data-simplebar-auto-hide="true">
             <div class="brand-logo">
-                <a href="{{ route('test') }}">
+                <a href="{{ route('track') }}">
                     <img src="assets/images/logo-icon.png" class="logo-icon" alt="logo gsm-store oran icon" />
                     <h5 class="logo-text">{{ config('app.name', 'GSM STORE') }}</h5>
                 </a>
@@ -57,11 +57,15 @@
                         <i class="zmdi zmdi-view-dashboard"></i> <span>Activities</span>
                     </a>
                 </li>
+
+                <li>
+                    <a href="{{ route('orders') }}">
+                        <i class="zmdi zmdi-accounts"></i> <span>Orders</span>
+                    </a>
+                </li>
+
                 @endAdmin
 
-                @vendor
-
-                @endVendor
 
                 <li>
                     <a href="index.html">
@@ -240,99 +244,9 @@
         </footer>
         <!--End footer-->
 
-        <!--start color switcher-->
-        <div class="right-sidebar">
-            <div class="switcher-icon">
-                <i class="zmdi zmdi-settings zmdi-hc-spin"></i>
-            </div>
-            <div class="right-sidebar-content">
-                <p class="mb-0">Gaussion Texture</p>
-                <hr />
-
-                <ul class="switcher">
-                    <li id="theme1"></li>
-                    <li id="theme2"></li>
-                    <li id="theme3"></li>
-                    <li id="theme4"></li>
-                    <li id="theme5"></li>
-                    <li id="theme6"></li>
-                </ul>
-
-                <p class="mb-0">Gradient Background</p>
-                <hr />
-
-                <ul class="switcher">
-                    <li id="theme7"></li>
-                    <li id="theme8"></li>
-                    <li id="theme9"></li>
-                    <li id="theme10"></li>
-                    <li id="theme11"></li>
-                    <li id="theme12"></li>
-                    <li id="theme13"></li>
-                    <li id="theme14"></li>
-                    <li id="theme15"></li>
-                </ul>
-            </div>
-        </div>
-        <!--end color switcher-->
 
     </div>
     <!--End wrapper-->
-
-    <!-- Bootstrap core JavaScript-->
-    <script src="assets/js/jquery.min.js"></script>
-    <script src="assets/js/popper.min.js"></script>
-    <script src="assets/js/bootstrap.min.js"></script>
-
-    <!-- simplebar js -->
-    <script src="assets/plugins/simplebar/js/simplebar.js"></script>
-    <!-- sidebar-menu js -->
-    <script src="assets/js/sidebar-menu.js"></script>
-    <!-- loader scripts -->
-    <script src="assets/js/jquery.loading-indicator.js"></script>
-    <!-- Custom scripts -->
-    <script src="assets/js/app-script.js"></script>
-    <!-- Chart js -->
-
-    <script src="assets/plugins/Chart.js/Chart.min.js"></script>
-
-    <!-- Index js -->
-    <script src="assets/js/index.js"></script>
-
-    @if (Route::currentRouteName() === 'activities')
-        <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
-        <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.js"></script>
-
-        <script>
-            $(function() {
-                $(document).ajaxStop(function() {
-                    window.location.reload();
-                });
-                $('#activity-order').sortable({
-                    axis: 'y',
-                    update: function(event, ui) {
-                        var data = $(this).sortable('toArray').map(function(x) {
-                            return x.replace('act-', '')
-                        });
-
-                        console.log(data);
-                        // POST to server using $.post or $.ajax
-                        $.ajax({
-                            headers: {
-                                'X-CSRF-Token': $('input[name="_token"]').attr('value')
-                            },
-                            data: {
-                                'order[]': data
-                            },
-                            type: 'POST',
-                            dataType: "json",
-                            url: '/activities/order'
-                        });
-                    }
-                });
-            });
-        </script>
-    @endif
 
 </body>
 

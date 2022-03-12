@@ -11,23 +11,19 @@ class Order extends Model
 {
     use HasFactory, SoftDeletes;
     protected $fillable = [
-        'client_id',
-        'activity_id',
+        'name',
+        'phone_number',
+        'mobile_type',
+        'description',
         'track_number',
-        'mobile',
-        'description'
+        'activity_id',
     ];
 
     protected $dates = [
         'deleted_at'
     ];
 
-    public function clients(): BelongsTo
-    {
-        return $this->belongsTo(Client::class);
-    }
-
-    public function activities(): BelongsTo
+    public function activity(): BelongsTo
     {
         return $this->belongsTo(Activity::class);
     }

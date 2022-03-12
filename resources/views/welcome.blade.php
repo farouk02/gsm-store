@@ -8,7 +8,7 @@
                 <div class="card-header">{{ __('Track') }}</div>
 
                 <div class="card-body">
-                    <form method="GET" action="{{ route('status') }}">
+                    <form method="GET" action="{{ route('track') }}">
 
 
                         <div class="row mb-3">
