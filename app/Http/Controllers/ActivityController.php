@@ -13,6 +13,9 @@ class ActivityController extends Controller
         return view('dashboard.activities', ['activities' => $activities]);
     }
 
+
+
+
     public function store(Request $request)
     {
 
@@ -28,13 +31,28 @@ class ActivityController extends Controller
 
         $activity->save();
 
-        return redirect()->back()->with(['success' => true]);
+        return redirect()->back()->with(['success' => true, 'type' => 'success', 'msg' => __('Activity added with success')]);
     }
+
+
+
+
 
     public function update(Request $request, Activity $activity)
     {
-        //
+        $request->validate([
+            'activity' => ['required', 'string']
+        ]);
+
+        $activity->activity = $request->activity;
+
+        $activity->save();
+
+        return redirect()->back()->with(['success' => true, 'type' => 'info', 'msg' => __('Activity updated with success')]);
     }
+
+
+
 
     public function order(Request $request)
     {
@@ -43,38 +61,21 @@ class ActivityController extends Controller
             $activity = Activity::findOrFail($value);
             $activity->order = $i++;
             $activity->save();
-            Activity::find($value)->update();
-            // $i++;
         }
-
-        return true;
     }
+
+
+
 
     public function destroy(Activity $activity)
     {
-        $activity->order = null;
         $activity->delete();
-        return redirect()->back();
-    }
-
-    public function emptyTrash()
-    {
-        Activity::onlyTrashed()->forceDelete();
-        return redirect()->back();
-    }
-
-    public function delete(Activity $activity)
-    {
-        $activity->forceDelete();
-        return redirect()->back();
-    }
-
-    public function restore(Activity $activity)
-    {
-        $count = count(Activity::all());
-        $activity->order = $count++;
-        $activity->save();
-        $activity->restore();
-        return redirect()->back();
+        $i = 1;
+        $activities = Activity::orderBy('order')->get();
+        foreach ($activities as $activity) {
+            $activity->order = $i++;
+            $activity->save();
+        }
+        return redirect()->back()->with(['success' => true, 'type' => 'danger', 'msg' => __('Activity deleted with success')]);
     }
 }

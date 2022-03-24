@@ -21,7 +21,7 @@ return new class extends Migration
             $table->string('mobile_type');
             $table->string('description');
             $table->string('track_number', 20)->unique();
-            $table->foreignIdFor(Activity::class)->onDelete('cascade');
+            $table->foreignIdFor(Activity::class)->constrained()->onDelete('cascade')->onUpdate('cascade');
             $table->timestamps();
             $table->softDeletes();
         });

@@ -4,6 +4,7 @@ use App\Http\Controllers\ActivityController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\Roles\UserController;
+use App\Http\Controllers\SearchOrderController;
 use App\Http\Controllers\TrackController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -21,6 +22,12 @@ Route::middleware(['PreventBackHistory'])->group(function () {
 
     // Route::middleware(['auth'])->group(function () {
 
+
+    Route::controller(SearchOrderController::class)->group(function () {
+        Route::get('search', 'index');
+        Route::post('autocomplete', 'autocomplete')->name('autocomplete');
+    });
+
     Route::controller(ActivityController::class)->prefix('activities')->middleware(['admin'])->name('activities')->group(function () {
         Route::get('', 'index');
         Route::post('store', 'store')->name('.store');
@@ -33,13 +40,17 @@ Route::middleware(['PreventBackHistory'])->group(function () {
 
     Route::controller(OrderController::class)->prefix('orders')->name('orders')->group(function () {
         Route::get('', 'index');
+        Route::get('in-progress', 'inProgress')->name('.inprogress');
+        Route::get('checked-out', 'checkedOut')->name('.checkedOut');
+        Route::get('trash', 'trash')->name('.trashed');
         Route::get('create', 'create')->name('.create');
         Route::post('store', 'store')->name('.store');
         Route::get('show/{order}', 'show')->name('.show');
-        Route::get('edit', 'edit')->name('.edit');
+        Route::post('upStatus/{order}', 'updateStatus')->name('.upStatus');
+        Route::get('edit/{order}', 'edit')->name('.edit');
         Route::post('update/{order}', 'update')->name('.update');
-        Route::post('delete/{order}', 'delete')->name('.delete');
-        Route::post('destroy/{order}', 'destroy')->name('.destroy')->withTrashed();
+        Route::post('destroy/{order}', 'destroy')->name('.destroy');
+        Route::post('delete/{order}', 'delete')->name('.delete')->withTrashed();
         Route::post('restore/{order}', 'restore')->name('.restore')->withTrashed();
     });
 

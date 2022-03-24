@@ -44,7 +44,9 @@
                                 ">
                                     <div class="progress-marker"></div>
                                     <div class="progress-text">
-                                        <h4 class="progress-title">{{ $activity->activity }}</h4>
+                                        <h4
+                                            class="progress-title {{ $activity->order === $order->activity->order ? 'text-bold' : '' }}">
+                                            {{ $activity->activity }}</h4>
                                     </div>
                                 </li>
                             @endforeach

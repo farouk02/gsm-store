@@ -68,22 +68,19 @@
                                                         <div class="row">
 
                                                             <form class="col-lg-3"
-                                                                action="{{ route('orders.destroy', $key->id) }}"
+                                                                action="{{ route('orders.delete', $key->id) }}"
                                                                 method="post">
                                                                 @csrf
                                                                 <button class="btn btn-danger" type="submit"><i
                                                                         class="fa-solid fa-trash"></i></button>
                                                             </form>
-                                                            <div class="col-lg-2">
-                                                                <a class="btn btn-primary"
-                                                                    href="{{ route('orders.edit', $key->id) }}"><i
-                                                                        class="fa-solid fa-pen-to-square"></i></a>
-                                                            </div>
-                                                            <div class="col-lg-2">
-                                                                <a class="btn btn-secondary"
-                                                                    href="{{ route('orders.show', $key->id) }}"><i
-                                                                        class="fa-solid fa-eye"></i></a>
-                                                            </div>
+                                                            <form class="col-lg-3"
+                                                                action="{{ route('orders.restore', $key->id) }}"
+                                                                method="post">
+                                                                @csrf
+                                                                <button class="btn btn-primary" type="submit"><i
+                                                                        class="fa-solid fa-rotate-left"></i></button>
+                                                            </form>
                                                         </div>
                                                     </td>
                                                 </tr>
@@ -94,7 +91,7 @@
                                 </div>
                             </div>
                         </div>
-                        {{ $orders->links() }}
+                        {{-- {{ $orders->links() }} --}}
                     </div>
                 </div>
             </div>

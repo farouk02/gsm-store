@@ -234,8 +234,6 @@
 
 ("use strict");
 
-// This JS is only needed for the demo to show features
-
 var progressTrackerDemo = (function () {
     var animPathLinks = document.querySelectorAll(".anim--path .progress-step");
     var animPathLinksLength = animPathLinks.length;
@@ -301,3 +299,64 @@ var progressTrackerDemo = (function () {
 })();
 
 progressTrackerDemo.init();
+
+$(function () {
+    // $(document).ajaxStop(function () {
+    //     window.location.reload();
+    // });
+
+    $("#activity-order").sortable({
+        axis: "y",
+        update: function (event, ui) {
+            var data = $(this)
+                .sortable("toArray")
+                .map(function (x) {
+                    return x.replace("act-", "");
+                });
+            $.ajax({
+                headers: {
+                    "X-CSRF-Token": $('input[name="_token"]').val(),
+                },
+                data: {
+                    "order[]": data,
+                },
+                type: "POST",
+                dataType: "json",
+                url: "/activities/order",
+                success: function (data) {
+                    refreshPage();
+                },
+            });
+        },
+    });
+
+    $(".modal").on("shown.bs.modal", function () {
+        $(this).find("[autofocus]").focus();
+    });
+
+    $(".edit-btn").on("click", function (e) {
+        $(this).parents("tr").find(".show-activity").toggle();
+        $(this).parents("tr").find(".edit-activity").toggle();
+    });
+
+    $("#search").keyup(function () {
+        var search_value = $(this).val();
+        if (search_value != "") {
+            var _token = $('input[name="_token"]').val();
+            $.ajax({
+                url: "{{ route('autocomplete') }}",
+                method: "POST",
+                data: {
+                    search_value: search_value,
+                    _token: _token,
+                },
+                success: function (data) {
+                    $("#countryList").fadeIn();
+                    $("#countryList").html(data);
+                },
+            });
+        } else {
+            $("#countryList").fadeOut();
+        }
+    });
+});

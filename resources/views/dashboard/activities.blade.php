@@ -2,99 +2,137 @@
 
 @section('content')
     <div class="container">
-        <div class="col-lg-12">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">Activities Table</h5>
-                    <div class="table-responsive">
-                        <table class="table">
-                            <thead>
-                                <tr>
-                                    <th scope="col">ORDER</th>
-                                    <th scope="col">Activity</th>
-                                    <th scope="col">Created at</th>
-                                    <th scope="col">Updated at</th>
-                                    <th scope="col">Deleted at</th>
-                                    <th scope="col">Actions</th>
-                                </tr>
-                            </thead>
-                            @csrf
-                            <tbody id="activity-order">
-                                @foreach ($activities as $activity => $key)
-                                    <tr id="act-{{ $key->id }}">
-                                        <th>{{ $key->order }} </th>
-                                        <td>{{ $key->activity }}</td>
-                                        <td>{{ $key->created_at }}</td>
-                                        <td>{{ $key->updated_at }}</td>
-                                        <td>{{ $key->deleted_at }}</td>
-                                        <td>
-                                            <form action="{{ route('activities.destroy', $key->id) }}" method="post">
-                                                @csrf
-                                                <input class="btn btn-danger" type="submit" value="delete">
-                                            </form>
-                                        </td>
+        @if (session('success'))
+            <div class="alert alert-{{ session('type') }}" role="alert">
+                {{ session('msg') }}
+            </div>
+        @endif
+
+        @if (count($errors) > 0)
+            <div class="alert alert-danger" role="alert">
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </div>
+        @endif
+
+
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="card-title ">
+                            <div class="">
+                                <h4>Activities Table</h4>
+
+                            </div>
+
+                            <!-- Button trigger modal ADD ACTIVITY -->
+
+                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addModal">
+                                ADD ACTIVITY
+                            </button>
+
+                        </div>
+                        <div class="table">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Activity</th>
+                                        <th>Created at</th>
+                                        <th>Updated at</th>
+                                        <th>Actions</th>
                                     </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
+                                </thead>
+                                @csrf
+                                <tbody id="activity-order">
+                                    @foreach ($activities as $activity => $key)
+                                        <tr id="act-{{ $key->id }}">
+                                            <th>{{ $key->order }} </th>
+                                            <td>
+                                                <div class="show-activity" style="display:block;">
+                                                    {{ $key->activity }}
+                                                </div>
+                                                <form class="edit-activity" style="display:none;"
+                                                    action="{{ route('activities.update', $key->id) }}" method="POST"
+                                                    autocomplete="off">
+                                                    @csrf
+                                                    <div class="form-group row">
+                                                        <div class="col-lg-9">
+                                                            <input class="form-control" type="text" name="activity"
+                                                                value="{{ $key->activity }}" placeholder="Activity name">
+                                                        </div>
+                                                        <div class="col-lg-3">
+                                                            <button type="submit" class="btn btn-primary">Save</button>
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                            </td>
+                                            <td>{{ $key->created_at }}</td>
+                                            <td>{{ $key->updated_at }}</td>
+                                            <td>
+                                                <div class="row">
+                                                    <form class="col-lg-3"
+                                                        action="{{ route('activities.destroy', $key->id) }}"
+                                                        method="post">
+                                                        @csrf
+                                                        <button class="btn btn-danger" type="submit">
+                                                            <i class="fa-solid fa-trash"></i>
+                                                        </button>
+                                                    </form>
+                                                    <div class="col-lg-2">
+                                                        <button data="{{ $key->id }}" type="button"
+                                                            class="btn btn-primary edit-btn">
+                                                            <i class="fa-solid fa-pen-to-square"></i>
+                                                        </button>
+                                                    </div>
+                                                </div>
+
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
+        </div>
 
-
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">Add Activity</h5>
-
-                    <form action="{{ route('activities.store') }}" method="POST">
-                        @csrf
-                        <div class="form-group row">
-                            <label class="col-lg-2 col-form-label form-control-label">Add Activity</label>
-                            <div class="col-lg-3">
-                                <input class="form-control @error('activity') is-invalid @enderror" type="text"
-                                    name="activity" value="{{ old('activity') }}" placeholder="Activity name">
-
-                            </div>
-                            <div class="col-lg-1">
-                                <input type="submit" class="btn btn-info" value="Add">
-
-                            </div>
-
-                            @if (count($errors) > 0)
-                                <div class="col-lg-4">
-                                    <div class="alert alert-danger alert-dismissible" role="alert">
-                                        <button type="button" class="close" data-dismiss="alert">&times;</button>
-                                        <ul>
-                                            @foreach ($errors->all() as $error)
-                                                <li>
-                                                    <div class="alert-message row">
-                                                        <span>{{ $error }}</span>
-                                                    </div>
-                                                </li>
-                                            @endforeach
-                                        </ul>
-                                    </div>
+        <!-- Modal ADD ACTIVITY -->
+        <div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="addModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <form action="{{ route('activities.store') }}" method="POST" autocomplete="off">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="addModalLabel">Add Activity</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            @csrf
+                            <div class="form-group row">
+                                <label class="col-lg-3 col-form-label form-control-label">Add Activity</label>
+                                <div class="col-lg-9">
+                                    <input class="form-control" type="text" name="activity"
+                                        value="{{ old('activity') }}" placeholder="Activity name" autofocus>
                                 </div>
-                            @endif
-                            @if (session('success'))
-                                <div class="col-lg-4">
-                                    <div class="alert alert-success alert-dismissible" role="alert">
-                                        <button type="button" class="close" data-dismiss="alert">&times;</button>
-                                        <div class="alert-icon">
-                                            <i class="icon-info"></i>
-                                        </div>
-                                        <div class="alert-message">
-                                            <span><strong>Success!</strong> Activity was added successfuly.</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            @endif
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Add</button>
                         </div>
                     </form>
-
                 </div>
             </div>
         </div>
+
+
+        <script>
+
+        </script>
 
     </div>
 @endsection
