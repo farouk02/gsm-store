@@ -29,9 +29,6 @@ class AppServiceProvider extends ServiceProvider
 
         Paginator::useBootstrapFive();
 
-
-
-
         Blade::directive('admin', function () {
             return "<?php if(Auth::user()->role === 9): ?>";
         });

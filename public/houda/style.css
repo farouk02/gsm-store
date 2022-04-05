@@ -2,7 +2,7 @@
 
 /* Google Font Import - Poppins */
 @import url('https://fonts.googleapis.com/css2?family=Poppins:ital@1&display=swap');
-*{
+/* *{
     margin: 0;
     padding: 0;
     box-sizing: border-box;
@@ -98,9 +98,9 @@ header .image-text .header-text{
     color: var(--sidebar-color);
     font-size: 22px;
 
-}
+} */
 
-/*
+
 body{
     height: 100vh;
     display: flex;
@@ -222,8 +222,5 @@ button{
 
 button:hover{
     background-color: #0e4bf1;
-} */
-
-
-/*  */
+} 
 

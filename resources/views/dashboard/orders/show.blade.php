@@ -18,37 +18,45 @@
                 </div>
             </div>
         @endif
-        <div class="col-md-10">
+        <div class="col-md-8">
             <div class="card">
+                <h5 class="card-header">Show order</h5>
                 <div class="card-body">
-                    <h5 class="card-title">Show order</h5>
 
-
-
-                    <div class="row">
-                        <div class="col-3">
+                    <div class="row mb-3">
+                        <div class="col-md-4 col-form-label text-md-end">
                             traking number:
                         </div>
-                        {{ $order->track_number }}
+                        <div class="col-md-6 col-form-label ">
+
+                            {{ $order->track_number }}
+                        </div>
                     </div>
-                    <div class="row">
-                        <div class="col-3">
+                    <div class="row mb-3">
+                        <div class="col-md-4 col-form-label text-md-end">
                             mobile:
                         </div>
-                        {{ $order->mobile_type }}
+                        <div class="col-md-6 col-form-label ">
+
+                            {{ $order->mobile_type }}
+                        </div>
                     </div>
-                    <div class="row">
-                        <div class="col-3">
+                    <div class="row mb-3">
+                        <div class="col-md-4 col-form-label text-md-end">
                             description:
                         </div>
-                        {{ $order->description }}
+                        <div class="col-md-6 col-form-label ">
+
+                            {{ $order->description }}
+                        </div>
                     </div>
-                    <div class="row">
-                        <div class="col-3">
+                    <div class="row mb-3">
+                        <div class="col-md-4 col-form-label text-md-end">
 
                             status:
                         </div>
-                        <form class="col-5" action="{{ route('orders.upStatus', $order->id) }}" method="post">
+                        <form class="col-md-6 col-form-label " action="{{ route('orders.upStatus', $order->id) }}"
+                            method="post">
                             @csrf
                             <select name="activity_id">
                                 @foreach ($activity as $activiti)
@@ -60,17 +68,20 @@
                             <button class="btn btn-primary" type="submit">Save</button>
                         </form>
                     </div>
-                    <div class="row">
-                        <div class="col-3">
+                    <div class="row mb-3">
+                        <div class="col-md-4 col-form-label text-md-end">
                             name:
                         </div>
-                        {{ $order->name }}
+                        <div class="col-md-6 col-form-label ">
+
+                            {{ $order->name }}
+                        </div>
                     </div>
-                    <div class="row">
-                        <div class="col-3">
+                    <div class="row mb-3">
+                        <div class="col-md-4 col-form-label text-md-end">
                             phone:
                         </div>
-                        <div class="col-5">
+                        <div class="col-md-6 col-form-label ">
                             <a href="tel:{{ $order->phone_number }}">{{ $order->phone_number }}</a>
                         </div>
 
