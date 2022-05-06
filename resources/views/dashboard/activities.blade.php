@@ -94,6 +94,16 @@
                                     @endforeach
                                 </tbody>
                             </table>
+
+                        </div>
+                        <div class="card-title flex align-items-end justify-content-end row">
+
+                            <div class="col-2">
+                                <button class="btn btn-primary" onclick="window.location.reload()">
+                                    {{ __('Save') }}
+                                </button>
+                            </div>
+
                         </div>
                     </div>
                 </div>

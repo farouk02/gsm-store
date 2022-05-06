@@ -33,10 +33,31 @@ class UserController extends Controller
             ->withUser($user);
     }
 
+    public function profile()
+    {
+        return view('dashboard.users.profile')->withUser(Auth::user());
+    }
+
+    public function updateP(Request $request)
+    {
+        $user = Auth::user();
+        $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email,' . $user->id]
+        ]);
+
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->save();
+
+        return redirect()->back()
+            ->with(['success' => true, 'type' => 'success', 'msg' => __('Profile updated with success')]);
+    }
 
     public function edit(User $user)
     {
-        return view('dashboard.users.edit', ['user' => $user]);
+        return view('dashboard.users.edit')
+            ->withUser($user);
     }
 
     public function update(Request $request, User $user)
@@ -69,8 +90,6 @@ class UserController extends Controller
 
     public function password(Request $request)
     {
-
-
         if (!(Hash::check($request->get('current-password'), Auth::user()->password))) {
             // The passwords matches
             return redirect()->back()->with("error", "Your current password does not matches with the password.");

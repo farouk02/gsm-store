@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\SearchResource;
 use App\Models\Order;
 use Illuminate\Http\Request;
 
@@ -37,7 +36,7 @@ class SearchOrderController extends Controller
 
             $output .= '</ul>';
 
-            echo $output;
+            return $output;
         }
     }
 }

@@ -33,7 +33,7 @@ return new class extends Migration
                 'role' => 9,
                 'name' => env('MAIL_FROM_NAME'),
                 'email' => env('MAIL_FROM_ADDRESS'),
-                'password' => Hash::make(env('MAIL_PASSWORD')), // your mail password
+                'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
                 'remember_token' => Str::random(10),
                 'created_at' => now(),
                 'updated_at' => now()

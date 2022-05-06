@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -28,16 +29,7 @@ class LoginController extends Controller
      *
      * @var string
      */
-    protected function redirectTo()
-    {
-        if (Auth()->user()->role === 1) {
-            return route('repairer.dashboard');
-        } elseif (Auth()->user()->role === 2) {
-            return route('vendor.dashboard');
-        } elseif (Auth()->user()->role === 9) {
-            return route('admin.dashboard');
-        }
-    }
+    protected $redirectTo = RouteServiceProvider::HOME;
 
     protected function logout(Request $request)
     {

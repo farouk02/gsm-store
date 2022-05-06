@@ -48,76 +48,6 @@
 
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
 
-                    <!-- Left Side Of Navbar -->
-                    <ul class="navbar-nav me-auto">
-
-
-                        <li class="nav-item dropdown">
-
-                            <input type="search" id="search"
-                                class="form-control relative flex-auto min-w-0 block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
-                                placeholder="NAME or PHONE NUMBER or TRAKING NUMBER" autocomplete="off" style="
-                                width:410px
-                                " />
-                            @csrf
-                            <div id="countryList" class="dropdown-menu dropdown-menu-right" aria-labelledby="search">
-                            </div>
-                        </li>
-
-                        <li class="nav-item">
-                            <a href="{{ route('activities') }}" class="nav-link">
-                                <i class="zmdi zmdi-view-dashboard"></i> <span>Activities</span>
-                            </a>
-                        </li>
-
-                        <li class="nav-item dropdown">
-                            <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
-                                data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                Orders
-                            </a>
-
-                            <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item" href="{{ route('orders') }}">
-                                    Orders
-                                </a>
-                                <a class="dropdown-item" href="{{ route('orders.inprogress') }}">
-                                    In progress
-                                </a>
-                                <a class="dropdown-item" href="{{ route('orders.checkedOut') }}">
-                                    Checked out
-                                </a>
-                                <a class="dropdown-item" href="{{ route('orders.trashed') }}">
-                                    Trashed
-                                </a>
-
-                            </div>
-                        </li>
-
-                        <li class="nav-item dropdown">
-                            <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
-                                data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                Users
-                            </a>
-
-                            <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item" href="{{ route('users') }}">
-                                    All Users
-                                </a>
-                                <a class="dropdown-item" href="{{ route('users.trashed') }}">
-                                    Trash
-                                </a>
-
-                            </div>
-                        </li>
-
-
-                        <li class="nav-item">
-                            <a href="{{ route('users') }}" class="nav-link">
-                                <i class="zmdi zmdi-view-dashboard"></i> <span>Users</span>
-                            </a>
-                        </li>
-
-                    </ul>
 
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ms-auto">
@@ -166,9 +96,8 @@
                                         {{ __('Change password') }}
                                     </a>
 
-                                    <a class="dropdown-item" href="{{ route('logout') }}"
-                                        onclick="event.preventDefault();
-                                                                                                                            document.getElementById('logout-form').submit();">
+                                    <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();
+                                                document.getElementById('logout-form').submit();">
                                         {{ __('Logout') }}
                                     </a>
 

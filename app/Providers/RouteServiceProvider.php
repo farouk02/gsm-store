@@ -17,11 +17,7 @@ class RouteServiceProvider extends ServiceProvider
      *
      * @var string
      */
-    public const HOME = '/home';
-    public const USER = '/user/dashboard';
-    public const ADMIN = '/admin/dashboard';
-    public const VENDOR = '/vendor/dashboard';
-    public const REPAIRER = '/repairer/dashboard';
+    public const HOME = '/orders';
 
     public function boot()
     {
@@ -37,11 +33,6 @@ class RouteServiceProvider extends ServiceProvider
         });
     }
 
-    /**
-     * Configure the rate limiters for the application.
-     *
-     * @return void
-     */
     protected function configureRateLimiting()
     {
         RateLimiter::for('api', function (Request $request) {

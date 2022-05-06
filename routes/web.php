@@ -54,7 +54,7 @@ Route::middleware(['PreventBackHistory'])->group(function () {
             Route::post('restore/{order}', 'restore')->name('.restore')->withTrashed();
         });
 
-        Route::controller(UserController::class)->prefix('users')->name('users')->group(function () {
+        Route::controller(UserController::class)->middleware(['admin'])->prefix('users')->name('users')->group(function () {
             Route::get('', 'index');
             Route::get('trash', 'trash')->name('.trashed');
             Route::get('edit/{user}', 'edit')->name('.edit');
@@ -66,17 +66,7 @@ Route::middleware(['PreventBackHistory'])->group(function () {
             Route::post('restore/{user}', 'restore')->name('.restore')->withTrashed();
         });
 
-        Route::prefix('admin')->name('admin.')->middleware('admin')->group(function () {
-            Route::get('dashboard', [UserController::class, 'index'])->name('dashboard');
-            Route::get('profile', [UserController::class, 'profile'])->name('profile');
-        });
-        Route::prefix('vendor')->name('vendor.')->middleware('vendor')->group(function () {
-            Route::get('dashboard', [UserController::class, 'index'])->name('dashboard');
-            Route::get('profile', [UserController::class, 'profile'])->name('profile');
-        });
-        Route::prefix('repairer')->name('repairer.')->middleware('repairer')->group(function () {
-            Route::get('dashboard', [UserController::class, 'index'])->name('dashboard');
-            Route::get('profile', [UserController::class, 'profile'])->name('profile');
-        });
+        Route::get('profile', [UserController::class, 'profile'])->name('profile');
+        Route::post('updateProfile', [UserController::class, 'updateP'])->name('updateP');
     });
 });
