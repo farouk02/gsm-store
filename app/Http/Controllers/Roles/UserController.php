@@ -12,7 +12,7 @@ class UserController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('admin');
+        $this->middleware('admin')->except(['profile', 'updateP', 'password', 'passwordView']);
     }
 
     public function index()

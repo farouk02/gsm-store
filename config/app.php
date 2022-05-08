@@ -12,7 +12,7 @@ return [
 
     'user_roles' => [
         9 => 'admin',
-        5 => 'vendor',
+        2 => 'vendor',
         1 => 'repairer'
     ],
 
